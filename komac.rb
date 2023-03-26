@@ -8,7 +8,7 @@ class Komac < Formula
     url "https://github.com/russellbanks/Komac/releases/download/v#{version}/Komac-#{version}.dmg"
     sha256 "5ef282d3708a3f9a01e94baf0e962c5e94625dd68dd4956f389ac8c39ad9fdc8"
   elsif OS.linux?
-    url "https://github.com/russellbanks/Komac/releases/download/v#{version}/komac-#{version}-1_amd64.deb"
+    url "https://github.com/russellbanks/Komac/releases/download/v#{version}/komac_#{version}-1_amd64.deb"
     sha256 "4e26307f8b28439fc1e63e5e466ef446144cc158a5e1c41f40f62c1ac80bde15"
   end
 
