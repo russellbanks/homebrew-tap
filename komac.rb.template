@@ -2,12 +2,12 @@ class Komac < Formula
   desc "Komac - Community Manifest Creator for Windows Package Manager (WinGet)"
   homepage "https://github.com/russellbanks/Komac"
   license "GPL-3.0"
-  version "2.0.3"
+  version "<VERSION>"
 
   on_macos do
     if Hardware::CPU.intel?
       url "https://github.com/russellbanks/Komac/releases/download/v<VERSION>/KomacPortable-macos-x64.tar.gz"
-      sha256 "<SHA256-MACOS-X64>"
+      sha256 "<SHA256-macos-x64>"
 
       def install
         bin.install "KomacPortable-macos-x64" => "komac"
@@ -15,7 +15,7 @@ class Komac < Formula
     end
     if Hardware::CPU.arm?
       url "https://github.com/russellbanks/Komac/releases/download/v<VERSION>/KomacPortable-macos-arm64.tar.gz"
-      sha256 "<SHA256-MACOS-ARM64>"
+      sha256 "<SHA256-macos-arm64>"
 
       def install
         bin.install "KomacPortable-macos-arm64" => "komac"
@@ -26,7 +26,7 @@ class Komac < Formula
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
       url "https://github.com/russellbanks/Komac/releases/download/v<VERSION>/KomacPortable-linux-x64.tar.gz"
-      sha256 "<SHA256-LINUX-X64>"
+      sha256 "<SHA256-linux-x64>"
 
       def install
         bin.install "KomacPortable-linux-x64" => "komac"
@@ -34,7 +34,7 @@ class Komac < Formula
     end
     if Hardware::CPU.intel? && !Hardware::CPU.is_64_bit?
       url "https://github.com/russellbanks/Komac/releases/download/v<VERSION>/KomacPortable-linux-x86.tar.gz"
-      sha256 "<SHA256-LINUX-X86>"
+      sha256 "<SHA256-linux-x86>"
 
       def install
         bin.install "KomacPortable-linux-x86" => "komac"
@@ -42,7 +42,7 @@ class Komac < Formula
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
       url "https://github.com/russellbanks/Komac/releases/download/v<VERSION>/KomacPortable-linux-arm64.tar.gz"
-      sha256 "<SHA256-LINUX-ARM64>"
+      sha256 "<SHA256-linux-arm64>"
 
       def install
         bin.install "KomacPortable-linux-arm64" => "komac"
@@ -50,7 +50,7 @@ class Komac < Formula
     end
     if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
       url "https://github.com/russellbanks/Komac/releases/download/v<VERSION>/KomacPortable-linux-armv7.tar.gz"
-      sha256 "<SHA256-LINUX-ARMV7>"
+      sha256 "<SHA256-linux-armv7>"
 
       def install
         bin.install "KomacPortable-linux-armv7" => "komac"
