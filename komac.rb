@@ -62,4 +62,3 @@ class Komac < Formula
     system "#{bin}/komac --help"
   end
 end
-
