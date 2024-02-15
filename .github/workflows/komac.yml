@@ -34,7 +34,7 @@ jobs:
             Write-Output "hash: $hash"
             $new_contents = $new_contents.Replace("<SHA256-$key>", $hash)
           }
-          Set-Content -Path ./komac.rb -Value $new_contents -Encoding utf8 -Force
+          Set-Content -Path ./komac.rb -Value $new_contents -Encoding utf8 -NoNewline -Force
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add komac.rb
