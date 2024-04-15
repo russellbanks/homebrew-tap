@@ -40,22 +40,6 @@ class Komac < Formula
         bin.install "KomacPortable-linux-x86" => "komac"
       end
     end
-    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/russellbanks/Komac/releases/download/v2.2.0/KomacPortable-linux-arm64.tar.gz"
-      sha256 "95c7e9012f54c7e3387e3e105b9ae554c4b346554bfa9440e169fff9aeb34369"
-
-      def install
-        bin.install "KomacPortable-linux-arm64" => "komac"
-      end
-    end
-    if Hardware::CPU.arm? && !Hardware::CPU.is_64_bit?
-      url "https://github.com/russellbanks/Komac/releases/download/v2.2.0/KomacPortable-linux-armv7.tar.gz"
-      sha256 "25ad624dadab9e28c1bacaa02ef72a9026a07a9f3afafc3086218460a7bbf53c"
-
-      def install
-        bin.install "KomacPortable-linux-armv7" => "komac"
-      end
-    end
   end
 
   test do
