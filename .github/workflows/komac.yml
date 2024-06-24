@@ -13,26 +13,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download files, calculate hashes, and update formula
         run: |
-          $version = '${{ github.event.inputs.version }}'
-          $urls = @{
-            'macos-x64' = "https://github.com/russellbanks/Komac/releases/download/v$version/KomacPortable-macos-x64.tar.gz";
-            'macos-arm64' = "https://github.com/russellbanks/Komac/releases/download/v$version/KomacPortable-macos-arm64.tar.gz";
-            'linux-x64' = "https://github.com/russellbanks/Komac/releases/download/v$version/KomacPortable-linux-x64.tar.gz";
-            'linux-x86' = "https://github.com/russellbanks/Komac/releases/download/v$version/KomacPortable-linux-x86.tar.gz";
+          # Update the version in the formula
+          (Get-Content -Raw ./komac.rb.template).Replace('<VERSION>','${{ github.event.inputs.version }}') | Out-File -NoNewline ./komac.rb
+
+          # Update sha256 hashes
+          (Get-Content -Raw ./komac.rb | Select-String -Pattern '(?<=sha256\s").*(?=")' -AllMatches).Matches.Value | ForEach-Object {
+            (Get-Content -Raw ./komac.rb).Replace($_, $(curl -sL $_ | awk '{print $1}')) | Out-File -NoNewline ./komac.rb
           }
-          $file_path = './komac.rb.template'
-          $text = Get-Content -Path $file_path -Raw
-          $new_contents = $text.Replace("<VERSION>", $version)
-          foreach ($key in $urls.Keys) {
-            $url = $urls[$key]
-            Write-Output "url: $url"
-            $fileName = [System.IO.Path]::GetFileName($url)
-            Invoke-WebRequest -Uri $url -OutFile $fileName
-            $hash = (Get-FileHash -Path $fileName -Algorithm SHA256).Hash.ToLower()
-            Write-Output "hash: $hash"
-            $new_contents = $new_contents.Replace("<SHA256-$key>", $hash)
-          }
-          Set-Content -Path ./komac.rb -Value $new_contents -Encoding utf8 -NoNewline -Force
+
+          # Commit and push changes
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add komac.rb
