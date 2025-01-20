@@ -2,20 +2,20 @@ class Komac < Formula
   desc "Komac - Community Manifest Creator for Windows Package Manager (WinGet)"
   homepage "https://github.com/russellbanks/Komac"
   license "GPL-3.0"
-  version "2.8.0"
+  version "2.9.0"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/russellbanks/Komac/releases/download/v2.8.0/komac-2.8.0-x86_64-apple-darwin.tar.gz"
-      sha256 "7a1041994106d986c90b27d76c996a95b6882d1b31ec95ec6b4ff11477bbf80f"
+      url "https://github.com/russellbanks/Komac/releases/download/v2.9.0/komac-2.9.0-x86_64-apple-darwin.tar.gz"
+      sha256 "fd0d1117df4911cdd9fc0fba11edfdf19ed52103bf51bbf734de503c004f8f38"
 
       def install
         bin.install "komac"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/russellbanks/Komac/releases/download/v2.8.0/komac-2.8.0-aarch64-apple-darwin.tar.gz"
-      sha256 "a1e5b81a86521de42d3d5e9eefb65d33f6622543e4b123efa517ef759eadb46f"
+      url "https://github.com/russellbanks/Komac/releases/download/v2.9.0/komac-2.9.0-aarch64-apple-darwin.tar.gz"
+      sha256 "b0fc119340af74f33ebb60aa1bf40d6d583ba7bb45b1bcae2ed70caa44d20d2e"
 
       def install
         bin.install "komac"
@@ -25,16 +25,16 @@ class Komac < Formula
 
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
-      url "https://github.com/russellbanks/Komac/releases/download/v2.8.0/komac-2.8.0-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "74de450eefa8a460b5bd17d283183253cd7bf12ee07f64ae21eb2260f69bba1b"
+      url "https://github.com/russellbanks/Komac/releases/download/v2.9.0/komac-2.9.0-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "d07a12831ad5418fee715488542a98ce3c0e591d05c850dd149fe78432be8c4c"
 
       def install
         bin.install "komac"
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/russellbanks/Komac/releases/download/v2.8.0/komac-2.8.0-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "60b070fcdebf71d3af9f3d93d815f94e58db52f8cecda713114db3e62b2d79a2"
+      url "https://github.com/russellbanks/Komac/releases/download/v2.9.0/komac-2.9.0-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "bc841bded409d65370bcf0f49d9358c5959a2a4363170c14df4fccf7491173b8"
 
       def install
         bin.install "komac"
