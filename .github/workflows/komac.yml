@@ -11,20 +11,43 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download files, calculate hashes, and update formula
+      - name: Fetch release asset hashes and update formula
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          # Update the version in the formula
-          (Get-Content -Raw ./komac.rb.template).Replace('<VERSION>','${{ github.event.inputs.version }}') | Out-File -NoNewline ./komac.rb
-
-          # Update sha256 hashes
-          (Get-Content -Raw ./komac.rb | Select-String -Pattern '(?<=sha256\s").*(?=")' -AllMatches).Matches.Value | ForEach-Object {
-            (Get-Content -Raw ./komac.rb).Replace($_, $(curl -sL $_ | awk '{print $1}')) | Out-File -NoNewline ./komac.rb
-          }
-
+          VERSION="${{ github.event.inputs.version }}"
+          REPO="russellbanks/Komac"
+          
+          # Get asset info as JSON from GitHub
+          echo "Fetching release assets for v${VERSION}..."
+          ASSETS_JSON=$(gh release view --repo "$REPO" "v$VERSION" --json assets)
+          
+          # Extract SHA256 for each asset using jq (remove sha256: prefix)
+          MACOS_INTEL_SHA256=$(echo "$ASSETS_JSON" | jq -r '.assets[] | select(.name | test("x86_64-apple-darwin.tar.gz$")) | .digest' | sed 's/sha256://')
+          MACOS_ARM_SHA256=$(echo "$ASSETS_JSON" | jq -r '.assets[] | select(.name | test("aarch64-apple-darwin.tar.gz$")) | .digest' | sed 's/sha256://')
+          LINUX_INTEL_SHA256=$(echo "$ASSETS_JSON" | jq -r '.assets[] | select(.name | test("x86_64-unknown-linux-gnu.tar.gz$")) | .digest' | sed 's/sha256://')
+          LINUX_ARM_SHA256=$(echo "$ASSETS_JSON" | jq -r '.assets[] | select(.name | test("aarch64-unknown-linux-gnu.tar.gz$")) | .digest' | sed 's/sha256://')
+          
+          echo "SHA256 hashes fetched from GitHub:"
+          echo "macOS Intel: $MACOS_INTEL_SHA256"
+          echo "macOS ARM: $MACOS_ARM_SHA256"
+          echo "Linux Intel: $LINUX_INTEL_SHA256"
+          echo "Linux ARM: $LINUX_ARM_SHA256"
+          
+          # Update the formula from template
+          cp ./komac.rb.template ./komac.rb
+          
+          # Replace placeholders with actual values
+          sed -i '' "s/<VERSION>/${VERSION}/g" ./komac.rb
+          sed -i '' "s/<SHA256_MACOS_INTEL>/${MACOS_INTEL_SHA256}/g" ./komac.rb
+          sed -i '' "s/<SHA256_MACOS_ARM>/${MACOS_ARM_SHA256}/g" ./komac.rb
+          sed -i '' "s/<SHA256_LINUX_INTEL>/${LINUX_INTEL_SHA256}/g" ./komac.rb
+          sed -i '' "s/<SHA256_LINUX_ARM>/${LINUX_ARM_SHA256}/g" ./komac.rb
+          
           # Commit and push changes
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add komac.rb
-          git commit -m "Update komac to v${{ github.event.inputs.version }}"
+          git commit -m "Update komac to v${VERSION}"
           git push
-        shell: pwsh
+        shell: bash
